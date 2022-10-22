@@ -1,51 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Scoped CSS Variables and JS</title>
-</head>
-<body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Scoped CSS Variables and JS</title>
+    </head>
+    <body>
+        <h2>Update CSS Variables with <span class="hl">JS</span></h2>
 
-  <div class="controls">
-    <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+        <div class="controls">
+            <label for="spacing">Spacing:</label>
+            <input
+                id="spacing"
+                type="range"
+                name="spacing"
+                min="0"
+                max="100"
+                value="0"
+                data-sizing="px"
+            />
 
-    <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+            <label for="blur">Blur:</label>
+            <input
+                id="blur"
+                type="range"
+                name="blur"
+                min="0"
+                max="100"
+                value="0"
+                data-sizing="px"
+            />
 
-    <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
-  </div>
+            <label for="base">Base Color</label>
+            <input id="base" type="color" name="base" value="#ffc600" />
+        </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+        <img src="https://unsplash.it/800/500" />
 
-  <style>
+        <style>
+            /*
+                misc styles, nothing to do with CSS variables
+            */
 
-    /*
-      misc styles, nothing to do with CSS variables
-    */
+            :root {
+                --base: #000000;
+                --spacing: 0;
+                --blur: 0;
+            }
 
-    body {
-      text-align: center;
-      background: #193549;
-      color: white;
-      font-family: 'helvetica neue', sans-serif;
-      font-weight: 100;
-      font-size: 50px;
-    }
+            body {
+                text-align: center;
+                background: #101010;
+                color: white;
+                font-family: 'helvetica neue', sans-serif;
+                font-weight: 100;
+                font-size: 24px;
+            }
 
-    .controls {
-      margin-bottom: 50px;
-    }
+            .controls {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+                max-width: 800px;
+                margin: 50px auto;
+            }
 
-    input {
-      width: 100px;
-    }
-  </style>
+            input {
+                width: 100px;
+            }
 
-  <script>
-  </script>
+            img {
+                border-color: var(--base);
+                border-width: var(--spacing);
+                border-style: solid;
+                filter: blur(var(--blur));
+            }
+        </style>
 
-</body>
+        <script>
+            const inputs = document.querySelectorAll('.controls input');
+
+            const handleUpdate = event => {
+                const target = event.target;
+                const suffix = target.dataset.sizing || '';
+
+                document.documentElement.style.setProperty(
+                    `--${target.name}`,
+                    target.value + suffix
+                );
+            };
+
+            inputs.forEach(input => {
+                input.addEventListener('change', handleUpdate);
+                input.addEventListener('mousemove', handleUpdate);
+            });
+        </script>
+    </body>
 </html>
